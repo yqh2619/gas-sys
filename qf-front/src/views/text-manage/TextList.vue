@@ -127,6 +127,7 @@ onMounted(() => {
 	getTableData();
 });
 const getTableData = async () => {
+  console.log('zty测试用');
 	const res = await axios.get('/frontapi/txts/list');
 	// console.log(res.data);
 	tableData.value = res.data.data;
