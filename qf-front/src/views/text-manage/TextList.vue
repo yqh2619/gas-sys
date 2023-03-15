@@ -117,6 +117,7 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import * as XLSX from 'xlsx'
 import { ElMessage } from 'element-plus'
+import { pa } from 'element-plus/es/locale';
 
 const store = useStore();
 const dialogVisible = ref(false);
@@ -128,8 +129,9 @@ const searchValue =ref('')
 onMounted(() => {
 	getTableData();
 });
-const getTableData = async () => {
-	const res = await axios.get('/frontapi/txts/list');
+const getTableData = async (obj) => {
+  const params = obj
+	const res = await axios.get('/frontapi/txts/list',{...params});
 	// console.log(res.data);
 	tableData.value = res.data.data;
 };
@@ -187,7 +189,7 @@ const formJsonIn = ref({
 const handleSizeChange = row => {
     formJsonIn.value.page_size = row
     formJsonIn.value.page = 1
-    getTableData()
+    getTableData(formJsonIn.value)
 }
 // 点击页面进行跳转
 const handleCurrentChange = row => {
