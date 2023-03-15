@@ -106,6 +106,7 @@
 		</el-dialog>
 </template>
 <script setup>
+
 import { ref, onMounted, reactive } from 'vue';
 import formatTime from '@/util/formatTime.js';
 // import inquireBox from "@/components/inquireBox/inquireBox.vue";
