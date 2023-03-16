@@ -41,23 +41,20 @@ const ProController = {
 		});
 	},
 	getList: async (req, res) => {
+		const page = parseInt(req.query.page) || 1;
+		const page_size = parseInt(req.query.page_size) || 10;
 		const result = await ProService.getList({
 			_id: req.params.id,
+			page,
+			page_size,
 		});
+		const total = await ProService.total({ _id: req.params.id });
 		res.send({
 			ActionType: 'OK',
 			data: result,
+			total: total.length, // 数据总数
 		});
 	},
-	// publish: async (req, res) => {
-	// 	await ProService.publish({
-	// 		...req.body,
-	// 		editTime: new Date(),
-	// 	});
-	// 	res.send({
-	// 		ActionType: 'OK',
-	// 	});
-	// },
 	delList: async (req, res) => {
 		// console.log(req._id);
 		await ProService.delList({

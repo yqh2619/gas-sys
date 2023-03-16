@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <el-page-header content="用户列表" icon="" title="用户管理" />
-      <el-table :data="tableData" stripe style="width: 100%">
+      <el-table :data="tableData" stripe style="width: 100%" height="460px" max-height="460px">
         <el-table-column label="头像">
           <template #default="scope">
             <div v-if="scope.row.avatar">
@@ -37,6 +37,20 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-row class="row-bg" justify="center">
+			<el-pagination
+				v-model:currentPage="formJsonIn.page"
+				:page-size="formJsonIn.page_size"
+				:page-sizes="[1, 2, 5, 10, 15]"
+				small
+				background
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="total"
+				:current-page="formJsonIn.page"
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+			/>
+		</el-row>
     </el-card>
     <el-dialog v-model="dialogVisible" title="编辑用户" width="50%">
       <el-form ref="userFormRef" :model="userForm" :rules="userFormRules" label-width="80px" class="demo-ruleForm">
@@ -72,6 +86,8 @@ import axios from "axios";
 const dialogVisible = ref(false);
 const tableData = ref();
 const userFormRef = ref();
+const total = ref(0); 
+
 let userForm = ref({
   username: "",
   password: "",
@@ -107,9 +123,14 @@ onMounted(() => {
   getTableData()
 })
 const getTableData = async () => {
-  const res = await axios.get("/frontapi/user/list")
-  // console.log(res.data);
-  tableData.value = res.data.data
+  const res = await axios.get("/frontapi/user/list",{
+		params: { ...formJsonIn.value },
+	})
+  // console.log(res.data.data);
+  // console.log(res.data.total);
+
+  tableData.value = res.data.data;
+	total.value = res.data.total;
 }
 //编辑回调
 const handleEdit = async data => {
@@ -141,10 +162,29 @@ const handleDelete = async data => {
   await axios.delete(`/frontapi/user/list/${data._id}`);
   getTableData()
 }
+//分页
+const formJsonIn = ref({
+	page: 1,
+	page_size: 10,
+});
+// 选择每页多少条
+const handleSizeChange = (row) => {
+	formJsonIn.value.page_size = row;
+	formJsonIn.value.page = 1;
+	getTableData(formJsonIn.value);
+};
+// 点击页面进行跳转
+const handleCurrentChange = (row) => {
+	formJsonIn.value.page = row;
+	getTableData();
+};
 </script>
 
 <style lang="scss" scoped>
 .el-table {
   margin-top: 20px;
+}
+.row-bg{
+  margin: 20px;
 }
 </style>

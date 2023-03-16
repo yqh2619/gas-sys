@@ -1,9 +1,5 @@
 const ProModel = require('../../models/ProModel');
 
-/*
- * @作者: kerwin
- * @公众号: 大前端私房菜
- */
 const ProService = {
 	add: async ({ title, introduction, detail, cover, editTime }) => {
 		// console.log("数据库模型处理");
@@ -51,12 +47,16 @@ const ProService = {
 			);
 		}
 	},
-	getList: async ({ _id }) => {
+	total: async ({ _id }) => {
 		return _id
 			? ProModel.find({
 					_id,
 			  })
-			: ProModel.find({});
+			: ProModel.find();
+	},
+	getList: async ({ _id, page, page_size }) => {
+		const skip = (page - 1) * page_size; // 计算跳过的文档数量
+		return ProModel.find().skip(skip).limit(page_size);
 	},
 	// publish: async ({ _id, isPublish, editTime }) => {
 	// 	return ProModel.updateOne(

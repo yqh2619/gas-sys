@@ -90,22 +90,29 @@ const UserController = {
 	},
 
 	getList: async (req, res) => {
-		const result = await UserService.getList(req.params);
+		const page = parseInt(req.query.page) || 1;
+		const page_size = parseInt(req.query.page_size) || 10;
+		// const result = await UserService.getList(req.params);(原版)
+		const result = await UserService.getList({
+			_id: req.params.id,
+			page,
+			page_size,
+		});
+		const total = await UserService.total(req.params);
 		res.send({
 			ActionType: 'OK',
 			data: result,
+			total: total.length,
 		});
 	},
 	putList: async (req, res) => {
-		// console.log(req.params._id);
-		// console.log(req.body);
 		const result = await UserService.putList(req.body);
 		res.send({
 			ActionType: 'OK',
 		});
 	},
 	delList: async (req, res) => {
-		console.log(req._id);
+		// console.log(req._id);
 		const result = await UserService.delList({
 			_id: req.params.id,
 		});

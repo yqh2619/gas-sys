@@ -33,8 +33,10 @@
         <Upload 
         :avatar="txtForm.cover" @yyychange="handleUploadChange" />
 			</el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm()">添加文章</el-button>
+      <el-form-item >
+        <el-row justify="end">
+          <el-button type="primary" @click="submitForm()">添加文章</el-button>
+        </el-row>
       </el-form-item>
 		</el-form>
 	</div>
