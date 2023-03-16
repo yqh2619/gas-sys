@@ -57,12 +57,17 @@ const TxtService = {
       })
     }
   },
+  total:async ({_id})=>{ return _id?TxtModel.find({_id}):TxtModel.find()},
   getList: async ({
-    _id
+    _id,
+    page,
+    page_size
   }) => {
-    return _id ? TxtModel.find({
-      _id
-    }) : TxtModel.find({})
+    const skip = (page - 1) * page_size; // 计算跳过的文档数量
+    return TxtModel.find().skip(skip).limit(page_size)
+    // return _id ? TxtModel.find({
+    //   _id
+    // }) : TxtModel.find({})
   },
   publish: async ({
     _id,

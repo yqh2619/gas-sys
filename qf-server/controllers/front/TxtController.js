@@ -50,12 +50,18 @@ const TxtController = {
     });
   },
   getList: async (req, res) => {
+    const page = parseInt(req.query.page) || 1
+    const page_size = parseInt(req.query.page_size) || 10
     const result = await TxtService.getList({
-      _id: req.params.id
+      _id: req.params.id,
+      page,
+      page_size
     });
+    const total =  await TxtService.total({_id: req.params.id,})
     res.send({
       ActionType: 'OK',
       data: result,
+      total:total.length // 数据总数
     });
   },
   publish: async (req, res) => {

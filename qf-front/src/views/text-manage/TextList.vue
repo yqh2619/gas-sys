@@ -85,7 +85,7 @@
     small
     background
     layout="total, sizes, prev, pager, next, jumper"
-    :total="tableData.length"
+    :total="total"
     :current-page="formJsonIn.page"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
@@ -122,15 +122,17 @@ const tableData = ref([]);
 const previewData = ref({});
 const router = useRouter();
 const searchValue =ref('')
+const total = ref(0) // 数据总量
 
 onMounted(() => {
 	getTableData();
 });
 const getTableData = async () => {
   console.log('zty测试用');
-	const res = await axios.get('/frontapi/txts/list');
-	// console.log(res.data);
+	const res = await axios.get('/frontapi/txts/list',{
+    params :{...formJsonIn.value} });
 	tableData.value = res.data.data;
+  total.value = res.data.total
 };
 //格式化分类信息
 const categoryFormat = (category) => {
@@ -139,7 +141,6 @@ const categoryFormat = (category) => {
 };
 //是否发布
 const handleSwichChange = async (item) => {
-	// console.log(isPublish);
 	await axios.put('/frontapi/txts/publish', {
 		_id: item._id,
 		isPublish: item.isPublish,
