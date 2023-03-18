@@ -45,7 +45,7 @@
   },
 
   "prettier.useTabs": true,
-  "explorer.confirmDelete": true,
+  "explorer.confirmDelete": false,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -94,5 +94,6 @@
   },
   "npm.fetchOnlinePackageInfo": false,
   "files.autoSave": "onFocusChange",
-  "editor.bracketPairColorization.independentColorPoolPerBracketType": true
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "workbench.editor.enablePreview": false,
 }

@@ -48,28 +48,32 @@ const TxtController = {
 		res.send({
 			ActionType: 'OK',
 		});
-  },
-  
-  getArticleList: async (req, res) => {
-    const params = {}
-    const page = parseInt(req.body.page) || 1;
-    const page_size = parseInt(req.body.page_size) || 10;
+	},
 
-    // 我建议后面你的表改成数字的...这样就能直接把req.body传过去,前端我做过处理
-    if (req.body.title) { 
-      params.title = { $regex: req.body.title, $options: "i" }
-    }
-    if (req.body.category) {
-      params.category = req.body.category + '' // 这里加''目的是为了转为字符串，tostring我着用了报错
-    }
+	getArticleList: async (req, res) => {
+		const params = {};
+		const page = parseInt(req.body.page) || 1;
+		const page_size = parseInt(req.body.page_size) || 10;
 
-    const result = await TxtService.getArticleList(params,{page,page_size})
-    const total = await TxtService.getArticleListTotal(params);
-    res.send({
-      data: result,
-      total: total.length,
-    })
-  },
+		// 我建议后面你的表改成数字的...这样就能直接把req.body传过去,前端我做过处理
+		if (req.body.title) {
+			params.title = { $regex: req.body.title, $options: 'i' };
+		}
+		if (req.body.category) {
+			params.category = req.body.category; // 这里加''目的是为了转为字符串，tostring我着用了报错
+		}
+		// console.log('123', params);
+		const result = await TxtService.getArticleList(params, {
+			page,
+			page_size,
+		});
+		const total = await TxtService.getArticleListTotal(params);
+
+		res.send({
+			data: result,
+			total: total.length,
+		});
+	},
 
 	getList: async (req, res) => {
 		const page = parseInt(req.query.page) || 1;

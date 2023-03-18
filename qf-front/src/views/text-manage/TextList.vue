@@ -141,7 +141,6 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import formatTime from '@/util/formatTime.js';
-// import inquireBox from "@/components/inquireBox/inquireBox.vue";
 import axios from 'axios';
 import {
 	Star,
@@ -153,7 +152,7 @@ import {
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import * as XLSX from 'xlsx';
-import { ElMessage,Form } from 'element-plus';
+import { ElMessage,ElForm} from 'element-plus';
 
 const state = reactive({
   formData:{
@@ -174,17 +173,19 @@ const searchValue = ref('');
 const total = ref(0); // 数据总量
 
 onMounted(() => {
-	getTableData();
+	// getTableData();
+  searchHandle();
 });
-const getTableData = async () => {
-	// console.log('zty测试用');
-	const res = await axios.get('/frontapi/txts/list', {
-		params: { ...formJsonIn.value },
-	});
-  // console.log(res.data.data);
-	tableData.value = res.data.data;
-	total.value = res.data.total;
-};
+// //原版
+// const getTableData = async () => {
+// 	// console.log('zty测试用');
+// 	const res = await axios.get('/frontapi/txts/list', {
+// 		params: { ...formJsonIn.value },
+// 	});
+//   // console.log(res.data.data);
+// 	tableData.value = res.data.data;
+// 	total.value = res.data.total;
+// };
 
 // 筛选过滤
 const paramsFilter = (params) => {
@@ -208,12 +209,18 @@ const searchHandle = async() => {
       ...formJsonIn.value
     }
     const params = paramsFilter(obj)
-    await axios.post(
+    const res= await axios.post(
       '/frontapi/article/list',
       params
-    )
+    );
+    // console.log(params);
+    // tableData.value = params.data;
+	  // total.value = params.data.total;
+    tableData.value = res.data.data;
+	  total.value = res.data.total;
   } catch (error) {
     console.log(error);
+
   }
 }
 // 重置
@@ -261,6 +268,7 @@ const exportTableData = async () => {
 			type: 'success',
 			message: '导出成功!',
 		});
+    
 	} catch (e) {
 		ElMessage.error('导出失败,失败信息:!');
 	}

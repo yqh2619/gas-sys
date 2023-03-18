@@ -1,9 +1,5 @@
 const TxtModel = require('../../models/TxtModel');
 
-/*
- * @作者: kerwin
- * @公众号: 大前端私房菜
- */
 const TxtService = {
 	getList: async ({ _id }) => {
 		return _id

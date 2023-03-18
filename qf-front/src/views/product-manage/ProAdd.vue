@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-page-header content="添加产品" icon="" title="产品管理" />
+    <el-card shadow="always" :span="24">
+      <el-page-header content="添加产品" icon="" title="产品管理" />
     <el-form ref="proFormRef" :model="proForm" :rules="proFormRules" label-width="80px" class="demo-ruleForm">
       <el-form-item label="产品名" prop="title">
         <el-input v-model="proForm.title" />
@@ -20,6 +21,8 @@
         <el-button type="primary" @click="submitForm()">添加产品</el-button>
       </el-form-item>
     </el-form>
+  </el-card>
+
   </div>
 </template>
 

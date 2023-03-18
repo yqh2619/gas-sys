@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<el-page-header content="添加文章" icon="" title="文章管理" />
-		<el-form
+		
+    <el-card shadow="always" :span="24">
+      <el-page-header content="添加文章" icon="" title="文章管理" />
+      <el-form
 			ref="txtFormRef"
 			:model="txtForm"
 			:rules="txtFormRules"
@@ -39,6 +41,7 @@
         </el-row>
       </el-form-item>
 		</el-form>
+    </el-card>
 	</div>
 </template>
 

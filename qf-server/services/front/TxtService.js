@@ -1,9 +1,5 @@
 const TxtModel = require('../../models/TxtModel');
 
-/*
- * @作者: kerwin
- * @公众号: 大前端私房菜
- */
 const TxtService = {
 	add: async ({
 		title,
@@ -62,16 +58,24 @@ const TxtService = {
 			);
 		}
 	},
+
 	total: async ({ _id }) => {
 		return _id ? TxtModel.find({ _id }) : TxtModel.find();
-  },
-  getArticleListTotal: async (params={}) => {
-    return TxtModel.find({...params})
-  },
-  getArticleList: async (params={},{page,page_size}) => {
-    const skip = (page - 1) * page_size; // 计算跳过的文档数量
-    return TxtModel.find({...params}).skip(skip).limit(page_size)    
-  },
+	},
+
+	getArticleListTotal: async (params = {}) => {
+		return TxtModel.find({ ...params });
+	},
+	getArticleList: async (params = {}, { page, page_size }) => {
+		// console.log('456', params);
+
+		const skip = (page - 1) * page_size; // 计算跳过的文档数量
+		return TxtModel.find({ ...params })
+			.skip(skip)
+			.limit(page_size);
+		// console.log('789', a);
+	},
+
 	getList: async ({ _id, page, page_size }) => {
 		const skip = (page - 1) * page_size; // 计算跳过的文档数量
 		return TxtModel.find().skip(skip).limit(page_size);
@@ -79,6 +83,7 @@ const TxtService = {
 		//   _id
 		// }) : TxtModel.find({})
 	},
+
 	publish: async ({ _id, isPublish, editTime }) => {
 		return TxtModel.updateOne(
 			{
