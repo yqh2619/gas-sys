@@ -10,6 +10,10 @@ const upload = multer({
 // /* GET home page. */
 TxtRouter.post("/frontapi/txts/add", upload.single('file'), TxtController.add);
 TxtRouter.post("/frontapi/txts/list", upload.single('file'), TxtController.updateList);
+
+// 文章管理，查询接口
+TxtRouter.post("/frontapi/article/list", TxtController.getArticleList);
+
 // TxtRouter.post("/frontapi/Txt/add", upload.single('file'), TxtController.add)
 // //实现用户列表的增删改查
 TxtRouter.get("/frontapi/txts/list", TxtController.getList)

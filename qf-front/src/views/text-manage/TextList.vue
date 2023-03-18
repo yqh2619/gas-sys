@@ -2,27 +2,60 @@
 	<el-card>
 		<el-page-header content="文章列表" icon="" title="文章管理">
 			<el-row :gutter="20">
-				<el-col :span="6">
-					<el-button
-						type="primary"
-						style="margin-top: 10px; width: 100px"
-						@click="exportTableData"
-						>导出</el-button
-					>
-				</el-col>
-				<el-col :span="8" style="padding: 10px">
-					<el-input
-						v-model="searchValue"
-						class="w-50 m-2"
-						placeholder="请输入查询关键字"
-						:prefix-icon="Search"
-						type="search"
-						@input="Search"
-					/>
-				</el-col>
-				<el-col :span="4" style="padding: 10px">
-					<el-button type="primary" :icon="Search">Search</el-button>
-				</el-col>
+        <el-form :inline="true" ref="articleFormRef" :model="state.formData" class="demo-form-inline" style="margin-top:20px">
+          <el-col >
+            <el-form-item label="标题" prop="title">
+              <el-input
+				 	    v-model="state.formData.title"
+				 	    class="w-50 m-2"
+				 	    placeholder="请输入标题"
+				 	    :prefix-icon="Search"
+				 	    type="search"
+				 	    @input="Search"
+				 	  />
+            </el-form-item>
+            <!-- 这里本来不应该直接写类型，但我不清楚你是怎么设计的，记得后面要改 -->
+            <el-form-item label="类型" prop="category">
+              <el-select v-model="state.formData.category" class="m-2" placeholder="请选择类型" size="large">
+                 <el-option label="最新动态" :value="1" />
+                 <el-option label="通知公告" :value="3"/>
+                 <el-option label="典型案例" :value="2"/>
+              </el-select>
+            </el-form-item>
+  
+            <el-form-item label="时间" prop="time">
+              <el-date-picker
+                v-model="state.formData.time"
+                type="datetimerange"
+                range-separator="-"
+                start-placeholder="起始时间"
+                end-placeholder="结束时间"
+              />
+            </el-form-item>
+
+          </el-col>
+
+         <el-col >
+				 	<el-button
+				 		type="primary"
+				 		style="margin-top: 10px; width: 100px"
+				 		@click="exportTableData"
+				 		>导出</el-button
+				 	>
+           <el-button 
+            type="primary" 
+             style="margin-top: 10px; width: 100px" 
+             :icon="Search"
+             @click="searchHandle">搜索
+           </el-button>
+           <el-button 
+            type="primary" 
+             style="margin-top: 10px; width: 100px" 
+             :icon="Search"
+             @click="resetHandle(articleFormRef)">重置
+           </el-button>
+				 </el-col>
+       </el-form>
 			</el-row>
 		</el-page-header>
 		<el-table :data="tableData" stripe style="width: 100%" height="400px" max-height="400px" id="table">
@@ -120,7 +153,17 @@ import {
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import * as XLSX from 'xlsx';
-import { ElMessage } from 'element-plus';
+import { ElMessage,Form } from 'element-plus';
+
+const state = reactive({
+  formData:{
+    title:'', // 标题
+    category:'', // 类型
+    time:[] // 时间
+  }
+})
+
+const articleFormRef = ref(null) // 表单ref
 
 const store = useStore();
 const dialogVisible = ref(false);
@@ -142,6 +185,42 @@ const getTableData = async () => {
 	tableData.value = res.data.data;
 	total.value = res.data.total;
 };
+
+// 筛选过滤
+const paramsFilter = (params) => {
+  const newParams = {}
+  for (let i in params) {
+    if(typeof params[i] === 'object'){
+      let arr = JSON.parse(JSON.stringify(params[i]))
+      if(arr.length > 0) {newParams[i] = arr}
+    }
+    else if (params[i] !== '') {
+      newParams[i] = params[i]
+    }
+  }
+  return newParams
+}
+// 搜索
+const searchHandle = async() => {
+  try {
+    const obj = {
+      ...state.formData,
+      ...formJsonIn.value
+    }
+    const params = paramsFilter(obj)
+    await axios.post(
+      '/frontapi/article/list',
+      params
+    )
+  } catch (error) {
+    console.log(error);
+  }
+}
+// 重置
+const resetHandle = (formRef) => {
+  formRef.resetFields()
+}
+
 //格式化分类信息
 const categoryFormat = (category) => {
 	const arr = ['最新动态', '典型案例', '通知公告'];

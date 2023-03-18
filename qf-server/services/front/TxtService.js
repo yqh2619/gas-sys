@@ -64,7 +64,14 @@ const TxtService = {
 	},
 	total: async ({ _id }) => {
 		return _id ? TxtModel.find({ _id }) : TxtModel.find();
-	},
+  },
+  getArticleListTotal: async (params={}) => {
+    return TxtModel.find({...params})
+  },
+  getArticleList: async (params={},{page,page_size}) => {
+    const skip = (page - 1) * page_size; // 计算跳过的文档数量
+    return TxtModel.find({...params}).skip(skip).limit(page_size)    
+  },
 	getList: async ({ _id, page, page_size }) => {
 		const skip = (page - 1) * page_size; // 计算跳过的文档数量
 		return TxtModel.find().skip(skip).limit(page_size);
