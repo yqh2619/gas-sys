@@ -1,6 +1,5 @@
 <template>
 	<div>
-		
     <el-card shadow="always" :span="24">
       <el-page-header content="添加文章" icon="" title="文章管理" />
       <el-form
@@ -35,11 +34,9 @@
         <Upload 
         :avatar="txtForm.cover" @yyychange="handleUploadChange" />
 			</el-form-item>
-      <el-form-item >
         <el-row justify="end">
-          <el-button type="primary" @click="submitForm()">添加文章</el-button>
+          <el-button type="primary" @click="submitForm()" style="width: 200px ;height: 40px;">添加文章</el-button>
         </el-row>
-      </el-form-item>
 		</el-form>
     </el-card>
 	</div>
@@ -132,5 +129,8 @@ const submitForm = () => {
 <style lang="scss" scoped>
 .el-form {
 	margin-top: 50px;
+}
+.el-form-item__content{
+  height: 10px;
 }
 </style>

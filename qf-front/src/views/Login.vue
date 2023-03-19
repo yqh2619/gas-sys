@@ -12,6 +12,7 @@
         </el-form-item>
         <el-button type="primary" @click="submitForm()">登录</el-button>
       </el-form>
+      <h5>用户注册系统可联系管理员，仅浏览下载请使用: root56  123456</h5>
     </div>
   </div>
 </template>
@@ -164,20 +165,24 @@ const options = reactive({
   text-align: center;
   padding: 20px;
   border-radius: 16px;
-
   h3 {
     font-size: 30px;
   }
+  h5{
+    margin-top:10px;
+    font-size: 10px;
+    color:gray
+  }
 
   .loginform {
-    margin-top: 20px;
+    margin-top: 30px;
   }
 }
 
 .el-button {
   width: 300px;
   height: 40px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 :deep(.el-form-item__label) {

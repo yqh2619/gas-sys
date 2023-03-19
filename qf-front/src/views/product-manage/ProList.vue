@@ -10,7 +10,9 @@
 						{{ formatTime.getTime(scope.row.editTime) }}
 					</template>
 				</el-table-column>
-				<el-table-column fixed="right" label="操作">
+				<el-table-column fixed="right" label="操作" 
+        v-if="$store.state.userInfo.role != 1"
+        >
 					<template #default="scope">
 						<el-button
 							type="primary"
@@ -58,10 +60,14 @@ import formatTime from '@/util/formatTime.js';
 import axios from 'axios';
 import {  Edit, Delete } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
 
 const tableData = ref([]);
 const router = useRouter();
 const total = ref(0); // 数据总量
+const store = useStore();
+
 
 onMounted(() => {
 	getTableData();
