@@ -7,7 +7,7 @@ const UserTypes = {
 	gender: Number, //sex,0,1,2
 	introduction: String, //简介
 	avatar: String,
-	role: Number, //权限，一级管理员1，二级管理员2，三级管理员3，普通用户2，
+	role: Number, //权限，1用户 2一级管理员，3二级管理员，4三级管理员
 };
 const UserModel = mongoose.model('user', new Schema(UserTypes));
 

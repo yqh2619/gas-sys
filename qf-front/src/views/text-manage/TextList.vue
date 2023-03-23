@@ -73,6 +73,17 @@
 					/>
 				</template>
 			</el-table-column>
+      <el-table-column
+				label="审核状态"
+				v-if="$store.state.userInfo.role != 1"
+			>
+				<template #default="scope">
+          <el-tag v-if="scope.row.verify === -1">待审批</el-tag>
+            <el-tag v-if="scope.row.verify === 0" type="danger">驳回</el-tag>
+            <el-tag v-if="scope.row.verify === 1" type="warning">审批中</el-tag>
+            <el-tag v-if="scope.row.verify === 2" type="success">审批通过</el-tag>
+				</template>
+			</el-table-column>
 			<el-table-column fixed="right" label="操作">
 				<template #default="scope">
 					<el-button
@@ -236,7 +247,7 @@ const handleSwichChange = async (item) => {
 		_id: item._id,
 		isPublish: item.isPublish,
 	});
-	await getTableData();
+	await  searchHandle();
 };
 //预览回调
 const handlePreView = (data) => {
@@ -248,7 +259,7 @@ const handlePreView = (data) => {
 const handleDelete = async (item) => {
 	// console.log(item);
 	await axios.delete(`/frontapi/txts/list/${item._id}`);
-	await getTableData();
+	await  searchHandle();
 };
 //编辑
 const handleEdit = async (item) => {
@@ -256,7 +267,6 @@ const handleEdit = async (item) => {
 	router.push(`/text-manage/edittxts/${item._id}`);
 };
 //导出
-// 导出table数据
 const exportTableData = async () => {
 	let workbook = XLSX.utils.table_to_book(document.getElementById('table')); //需要在table上定义一个id
 	try {
