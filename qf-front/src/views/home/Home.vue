@@ -54,7 +54,7 @@ const avatarUrl = computed(
       : `https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png`
 );
 const welcomeText = computed(() =>
-  new Date().getHours() < 12 ? '要开心每一天' : '喝杯咖啡提提神吧~'
+  new Date().getHours() < 14 ? '要开心每一天哦~' : '喝杯咖啡提提神吧~'
 );
 onMounted(() => {
 	getData();
