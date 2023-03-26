@@ -57,6 +57,8 @@ const txtForm = reactive({
 	cover: '',
 	file: null,
 	isPublish: 0, //是否发布 0未发布，1已发
+  verify:0,
+	verifyContent:'',
 });
 const txtFormRules = reactive({
 	title: [
@@ -91,7 +93,7 @@ const txtFormRules = reactive({
 //每次editor内容改变的回调
 const handleChange = (data) => {
   // console.log(data);
-  txtForm.content=data
+  txtForm.content=data;
 }
 const options = [
 	{
@@ -118,7 +120,6 @@ const submitForm = () => {
       // 提交数据到后端
       // console.log(txtForm);
       //后台通信
-
       const res = await upload('/frontapi/txts/add', txtForm)
       router.push(`/text-manage/TextList`)
     }

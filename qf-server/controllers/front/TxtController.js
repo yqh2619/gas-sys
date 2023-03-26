@@ -2,13 +2,15 @@ const TxtService = require('../../services/front/TxtService');
 const JWT = require('../../util/JWT');
 const TxtController = {
 	add: async (req, res) => {
-		// console.log(req.body, req.file);
+		console.log(req.body, req.file);
 		const cover = req.file ? `/txtsuploads/${req.file.filename}` : '';
 		const {
 			title,
 			content,
 			category, //1最新动态、2典型案例、3通知公告
 			isPublish,
+			verify,
+			verifyContent,
 		} = req.body;
 
 		//调用service模块更新数据
@@ -17,6 +19,8 @@ const TxtController = {
 			content,
 			category: Number(category), //1最新动态、2典型案例、3通知公告
 			isPublish: Number(isPublish),
+			verify,
+			verifyContent,
 			cover,
 			editTime: new Date(),
 		});
@@ -32,6 +36,8 @@ const TxtController = {
 			content,
 			category, //1最新动态、2典型案例、3通知公告
 			isPublish,
+			verify,
+			verifyContent,
 			_id,
 		} = req.body;
 
@@ -43,13 +49,15 @@ const TxtController = {
 			category: Number(category), //1最新动态、2典型案例、3通知公告
 			isPublish: Number(isPublish),
 			cover,
+			verify,
+			verifyContent,
 			editTime: new Date(),
 		});
 		res.send({
 			ActionType: 'OK',
 		});
 	},
-
+	//zty获取数据，并处理
 	getArticleList: async (req, res) => {
 		const params = {};
 		const page = parseInt(req.body.page) || 1;
@@ -68,13 +76,12 @@ const TxtController = {
 			page_size,
 		});
 		const total = await TxtService.getArticleListTotal(params);
-
 		res.send({
 			data: result,
 			total: total.length,
 		});
 	},
-
+	//yqh获取数据
 	getList: async (req, res) => {
 		const page = parseInt(req.query.page) || 1;
 		const page_size = parseInt(req.query.page_size) || 10;

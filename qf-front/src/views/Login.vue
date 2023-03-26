@@ -12,7 +12,7 @@
         </el-form-item>
         <el-button type="primary" @click="submitForm()">登录</el-button>
       </el-form>
-      <h5>用户注册系统可联系管理员，仅浏览下载请使用: root56  123456</h5>
+      <h5>用户注册系统可联系管理员，仅浏览下载请使用: root123  123456</h5>
     </div>
   </div>
 </template>

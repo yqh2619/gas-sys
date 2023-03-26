@@ -21,6 +21,12 @@ const TxtTypes = {
 	editTime: {
 		type: Date,
 	},
+	verify: {
+		type: Number, //-1驳回， 0待审核 ，1初审通过，2终审通过
+	},
+	verifyContent: {
+		type: String,
+	},
 };
 const TxtModel = mongoose.model('txt', new Schema(TxtTypes));
 

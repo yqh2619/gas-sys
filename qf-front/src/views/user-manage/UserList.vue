@@ -134,7 +134,7 @@ const getTableData = async () => {
 }
 //编辑回调
 const handleEdit = async (data) => {
-  console.log(data);
+  // console.log(data);
   await axios.get(`/frontapi/user/list/${data._id}`);
   // console.log(res.data);
   userForm.value = data

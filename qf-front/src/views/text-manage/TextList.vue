@@ -45,7 +45,6 @@
 				 		>导出
             </el-button>
           </el-col>
-
 			</el-row>
 		</el-page-header>
 		<el-table :data="tableData" stripe style="width: 100%" height="380px" max-height="380px" id="table">
@@ -62,7 +61,12 @@
 			</el-table-column>
 			<el-table-column
 				label="是否发布"
-				v-if="$store.state.userInfo.role != 1"
+        :filters="[
+        { text: '发布', value: 1 },
+        { text: '未发布', value: 0 },
+      ]"
+        :filter-method="filterIsPublish"
+				v-if="$store.state.userInfo.role === 4"
 			>
 				<template #default="scope">
 					<el-switch
@@ -78,10 +82,11 @@
 				v-if="$store.state.userInfo.role != 1"
 			>
 				<template #default="scope">
-          <el-tag v-if="scope.row.verify === -1">待审批</el-tag>
-            <el-tag v-if="scope.row.verify === 0" type="danger">驳回</el-tag>
-            <el-tag v-if="scope.row.verify === 1" type="warning">审批中</el-tag>
-            <el-tag v-if="scope.row.verify === 2" type="success">审批通过</el-tag>
+          <el-tag v-if="scope.row.verify === -2" type="danger">撤销</el-tag>
+          <el-tag v-if="scope.row.verify === -1" type="danger">驳回</el-tag>
+          <el-tag v-if="scope.row.verify === 0" type="info">待审批</el-tag>
+          <el-tag v-if="scope.row.verify === 1" type="success">初审通过</el-tag>
+          <el-tag v-if="scope.row.verify === 2" type="success">终审通过</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column fixed="right" label="操作">
@@ -89,7 +94,7 @@
 					<el-button
 						type="warning"
 						circle
-						:icon="Star"
+						:icon="View"
 						@click="handlePreView(scope.row)"
             
 					/>
@@ -155,28 +160,21 @@ import {
 	Search,
   Refresh,
   Download ,
+  View
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import * as XLSX from 'xlsx';
 import { ElMessage,ElForm} from 'element-plus';
 
-const state = reactive({
-  formData:{
-    title:'', // 标题
-    category:'', // 类型
-    time:[] // 时间
-  }
-})
 
 const articleFormRef = ref(null) // 表单ref
-
 const store = useStore();
 const dialogVisible = ref(false);
 const tableData = ref([]);
 const previewData = ref({});
 const router = useRouter();
-const searchValue = ref('');
+// const searchValue = ref('');
 const total = ref(0); // 数据总量
 
 onMounted(() => {
@@ -194,20 +192,41 @@ onMounted(() => {
 // 	total.value = res.data.total;
 // };
 
+//表格筛选
+const filterIsPublish = (value, row) => {
+  // console.log(value);
+  if (store.state.userInfo.role > 1) {
+    return row.isPublish === value
+}else{
+  return row.isPublish === value[0]
+}
+  }
+  
 // 筛选过滤
 const paramsFilter = (params) => {
+  // console.log(params);
   const newParams = {}
   for (let i in params) {
     if(typeof params[i] === 'object'){
       let arr = JSON.parse(JSON.stringify(params[i]))
-      if(arr.length > 0) {newParams[i] = arr}
+      if(arr.length > 0 ) {newParams[i] = arr}
     }
     else if (params[i] !== '') {
       newParams[i] = params[i]
     }
   }
+  // console.log(newParams);
   return newParams
 }
+const state = reactive({
+  formData:{
+    title:'', // 标题
+    category:'', // 类型
+    isPublish: 0,
+    time:[] // 时间
+  }
+})
+
 // 搜索
 const searchHandle = async() => {
   try {
@@ -220,7 +239,7 @@ const searchHandle = async() => {
       '/frontapi/article/list',
       params
     );
-    // console.log(params);
+    // console.log(state.formData);
     // tableData.value = params.data;
 	  // total.value = params.data.total;
     tableData.value = res.data.data;
@@ -235,7 +254,6 @@ const resetHandle = (formRef) => {
   formRef.resetFields();
   searchHandle();
 }
-
 //格式化分类信息
 const categoryFormat = (category) => {
 	const arr = ['最新动态', '典型案例', '通知公告'];
