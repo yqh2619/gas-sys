@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-page-header content="添加产品" icon="" title="产品管理" />
+    <el-card shadow="always" :span="24">
+      <el-page-header content="添加产品" icon="" title="产品管理" />
     <el-form ref="proFormRef" :model="proForm" :rules="proFormRules" label-width="80px" class="demo-ruleForm">
       <el-form-item label="产品名" prop="title">
         <el-input v-model="proForm.title" />
@@ -8,7 +9,7 @@
       <el-form-item label="产品简介" prop="introduction">
         <el-input v-model="proForm.introduction" type="textarea" />
       </el-form-item>
-      <el-form-item label="产品详细描述" prop="detail">
+      <el-form-item label="详细描述" prop="detail">
         <el-input v-model="proForm.detail" type="textarea" />
       </el-form-item>
       <el-form-item label="产品图片" prop="cover">
@@ -16,10 +17,12 @@
         :avatar="proForm.cover" @yyychange="handleChange" />
       </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="submitForm()">添加产品</el-button>
-      </el-form-item>
+      <el-row justify="end">
+        <el-button type="primary" @click="submitForm()" style="width: 200px ;height: 40px;">添加产品</el-button>
+      </el-row>
     </el-form>
+  </el-card>
+
   </div>
 </template>
 

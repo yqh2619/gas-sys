@@ -133,12 +133,12 @@ const getTableData = async () => {
 	total.value = res.data.total;
 }
 //编辑回调
-const handleEdit = async data => {
+const handleEdit = async (data) => {
   // console.log(data);
-  const res = await axios.get(`/frontapi/user/list/${data._id}`);
-  // console.log(res.data.data);
-  userForm.value = res.data.data[0]
-  // Object.assign(userForm.value, res.data.data[0])
+  await axios.get(`/frontapi/user/list/${data._id}`);
+  // console.log(res.data);
+  userForm.value = data
+  // Object.assign(userForm.value, data)
   dialogVisible.value = true;
 }
 //确认回调
@@ -157,7 +157,7 @@ const handleEditConfirm = () => {
   })
 
 }
-const handleDelete = async data => {
+const handleDelete = async (data) => {
   // console.log(data);
   await axios.delete(`/frontapi/user/list/${data._id}`);
   getTableData()

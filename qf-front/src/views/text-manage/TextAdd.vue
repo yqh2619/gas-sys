@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<el-page-header content="添加文章" icon="" title="文章管理" />
-		<el-form
+    <el-card shadow="always" :span="24">
+      <el-page-header content="添加文章" icon="" title="文章管理" />
+      <el-form
 			ref="txtFormRef"
 			:model="txtForm"
 			:rules="txtFormRules"
@@ -33,12 +34,11 @@
         <Upload 
         :avatar="txtForm.cover" @yyychange="handleUploadChange" />
 			</el-form-item>
-      <el-form-item >
         <el-row justify="end">
-          <el-button type="primary" @click="submitForm()">添加文章</el-button>
+          <el-button type="primary" @click="submitForm()" style="width: 200px ;height: 40px;">添加文章</el-button>
         </el-row>
-      </el-form-item>
 		</el-form>
+    </el-card>
 	</div>
 </template>
 
@@ -57,6 +57,8 @@ const txtForm = reactive({
 	cover: '',
 	file: null,
 	isPublish: 0, //是否发布 0未发布，1已发
+  verify:0,
+	verifyContent:'',
 });
 const txtFormRules = reactive({
 	title: [
@@ -91,7 +93,7 @@ const txtFormRules = reactive({
 //每次editor内容改变的回调
 const handleChange = (data) => {
   // console.log(data);
-  txtForm.content=data
+  txtForm.content=data;
 }
 const options = [
 	{
@@ -118,7 +120,6 @@ const submitForm = () => {
       // 提交数据到后端
       // console.log(txtForm);
       //后台通信
-
       const res = await upload('/frontapi/txts/add', txtForm)
       router.push(`/text-manage/TextList`)
     }
@@ -129,5 +130,8 @@ const submitForm = () => {
 <style lang="scss" scoped>
 .el-form {
 	margin-top: 50px;
+}
+.el-form-item__content{
+  height: 10px;
 }
 </style>

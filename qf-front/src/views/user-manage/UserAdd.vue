@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-page-header content="添加用户" icon="" title="用户管理" />
+    <el-card shadow="always" :span="24" style="height: 620px;">
+      <el-page-header content="添加用户" icon="" title="用户管理" />
     <el-form ref="userFormRef" :model="userForm" :rules="userFormRules" label-width="80px" class="demo-ruleForm">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="userForm.username" />
@@ -21,11 +22,12 @@
         <Upload 
         :avatar="userForm.avatar" @yyychange="handleChange" />
       </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" @click="submitForm()">添加用户</el-button>
-      </el-form-item>
+      <el-row justify="end">
+        <el-button type="primary" @click="submitForm()" style="width: 200px ;height: 40px;">添加用户</el-button>
+      </el-row>
     </el-form>
+  </el-card>
+
   </div>
 </template>
 

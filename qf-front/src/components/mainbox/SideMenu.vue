@@ -12,7 +12,7 @@
         </el-icon>
         <span>个人中心</span>
       </el-menu-item>
-      <el-sub-menu index="/user-manage" v-admin>
+      <el-sub-menu index="/user-manage" v-admin v-if="$store.state.userInfo.role === 4">
         <template #title>
           <el-icon>
             <UserFilled />
