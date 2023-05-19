@@ -17,12 +17,12 @@ const TxtTypes = {
 	},
 	isPublish: {
 		type: Number,
-	}, //1未发布，2已发布
+	}, //1未发布，0已发布
 	editTime: {
 		type: Date,
 	},
 	verify: {
-		type: Number, //-1驳回， 0待审核 ，1初审通过，2终审通过
+		type: Number, //-2撤回 -1驳回， 0待审核 ，1初审通过，2终审通过
 	},
 	verifyContent: {
 		type: String,
